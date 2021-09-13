@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 
 import Item from './components/Item';
 
@@ -14,12 +14,11 @@ export default function App() {
   function handleClick(){
     Keyboard.dismiss();
     setTaskArr([...taskArr, task]);
-    setTask(null);
-    console.log(taskArr);
+    setTask("");
   }
   function handleRemove(index){
     let itemsCopy=[...taskArr];
-    itemsCopy.pop(index, 1);
+    itemsCopy.splice(index,1);
     setTaskArr(itemsCopy);
   }
   return (
@@ -31,7 +30,7 @@ export default function App() {
         <Text style={styles.title} >Today's Task</Text>
 
         {/* This will contain the items */}
-        <View style={styles.items} >
+        <ScrollView style={styles.items}   showsVerticalScrollIndicator ={false} showsHorizontalScrollIndicator={false} >
           {taskArr.map((items, index)=>{
             return(
               <TouchableOpacity key={index} onPress={()=> handleRemove(index)} >
@@ -39,7 +38,7 @@ export default function App() {
               </TouchableOpacity>
             )
           })}
-        </View>
+        </ScrollView>
       </View>
 
       <KeyboardAvoidingView behavior={Platform.OS==="ios" ? "padding" : 'height' }style={styles.textInputBox}>
@@ -75,11 +74,12 @@ const styles = StyleSheet.create({
   },
   textInputBox:{
     position:'absolute',
-    bottom: 60,
+    bottom: 0,
     width: "100%",
     flexDirection:'row',
     justifyContent:'space-around',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor: "#E8EAED"
   }, 
   input: {
     paddingVertical: 15,
