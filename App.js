@@ -1,17 +1,24 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import Item from './components/Item';
 
 export default function App() {
 
   const [task, setTask]=useState("");
+  const [taskArr, setTaskArr]=useState([]);
 
   function handleChange(text){
     setTask(text);
   }
   function handleClick(){
-    console.log(task);
+    Keyboard.dismiss();
+    setTaskArr([...taskArr, task]);
+    setTask(null);
+    console.log(taskArr);
+  }
+  function handleRemove(){
+
   }
   return (
     <View style={styles.container}>
@@ -20,14 +27,15 @@ export default function App() {
         <Text style={styles.title} >Today's Task</Text>
 
         <View style={styles.items} >
-          <Item text="Apple" />
-          <Item text="Orange" />
+          {taskArr.map((items, index)=>{
+            return(<Item key={index} text={items} />)
+          })}
         </View>
       </View>
 
       <KeyboardAvoidingView behavior={Platform.OS==="ios" ? "padding" : 'height' }style={styles.textInputBox}>
         
-        <TextInput style={styles.input} placeholder="Create task" value={task} onChangeText={handleChange} />
+        <TextInput style={styles.input} placeholder="Create task" value={task} onChangeText={handleChange} required />
         
         <TouchableOpacity onPress={handleClick} >
           <View style={styles.addBox} >
