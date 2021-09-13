@@ -17,26 +17,35 @@ export default function App() {
     setTask(null);
     console.log(taskArr);
   }
-  function handleRemove(){
-
+  function handleRemove(index){
+    let itemsCopy=[...taskArr];
+    itemsCopy.pop(index, 1);
+    setTaskArr(itemsCopy);
   }
   return (
     <View style={styles.container}>
 
       <View style={styles.main} >
+
+        {/* Title */}
         <Text style={styles.title} >Today's Task</Text>
 
+        {/* This will contain the items */}
         <View style={styles.items} >
           {taskArr.map((items, index)=>{
-            return(<Item key={index} text={items} />)
+            return(
+              <TouchableOpacity key={index} onPress={()=> handleRemove(index)} >
+                <Item text={items} />
+              </TouchableOpacity>
+            )
           })}
         </View>
       </View>
 
       <KeyboardAvoidingView behavior={Platform.OS==="ios" ? "padding" : 'height' }style={styles.textInputBox}>
         
-        <TextInput style={styles.input} placeholder="Create task" value={task} onChangeText={handleChange} required />
-        
+        <TextInput style={styles.input} placeholder="Create task" value={task} onChangeText={handleChange} />
+          
         <TouchableOpacity onPress={handleClick} >
           <View style={styles.addBox} >
             <Text>+</Text>
